@@ -18,8 +18,6 @@ async def get_last_video_report(background_tasks: BackgroundTasks, user=Depends(
 	stmt = select(video_tbl).order_by(video_tbl.c.title.desc()).limit(5)
 	email_content = await session.execute(stmt)
 	last_5_video = [i[1] for i in email_content.fetchall()]
-	# for i in email_content.fetchall():
-	# 	last_video.append(i[1])
 	background_tasks.add_task(send_email_report_last_video, user.email, last_5_video)
 	return {
 		"status": 200,
