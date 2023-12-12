@@ -1,33 +1,25 @@
-import time
-from pathlib import Path
-
 from fastapi import APIRouter, Depends, Form, UploadFile, File, Request
-from fastapi_cache.decorator import cache
-
-from sqlalchemy import select, insert
+from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.responses import StreamingResponse
-from starlette.templating import Jinja2Templates
 from src.database import get_async_session
-from .models import video as video_tbl
-from .utils import save_video, open_file
+from ..models import video as video_tbl
+from .utils import save_video
+
 
 router = APIRouter(
-	prefix='/video',
-	tags=['Video']
+	prefix='/upload_video',
+	tags=['Upload_video']
 )
-BASE_DIR = Path(__file__).resolve().parent
-templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
 
 
-@router.get('/any_long_operation')
-@cache(expire=3600)
-def get_long_op():
-	time.sleep(3)
-	return 'Много-много данных!'
+# @router.get('/any_long_operation')
+# @cache(expire=3600)
+# def get_long_op():
+# 	time.sleep(3)
+# 	return 'Много-много данных!'
 
 
-@router.post('/upload_video')
+@router.post('')
 async def upload_video(
 		user_id: int,
 		title: str = Form(...),
@@ -42,25 +34,11 @@ async def upload_video(
 	return info
 
 
-@router.get('/{video_pk}')
-async def get_video(request: Request, video_pk: int,
-					session: AsyncSession = Depends(get_async_session)) -> StreamingResponse:
-	stmt = select(video_tbl).where(video_tbl.c.id == video_pk)
-	result = await session.execute(stmt)
-	file = result.fetchall()[0][3]
-	file, status_code, content_len, headers = await open_file(request, file)
-	response = StreamingResponse(file, media_type='video/mp4', status_code=status_code)
-	response.headers.update({
-		'Accept-Ranges': 'bytes',
-		'Content-Length': str(content_len),
-		**headers
-	})
-	return response
 
 # @router.get('/user/all_video/', response_model=List[CreateVideo])
 # async def get_list_video_user(session: AsyncSession = Depends(get_async_session)):
-# 	query = select(video).where()
-# 	video_list = await video.e
+# 	query = select(videos).where()
+# 	video_list = await videos.e
 # 	return video_list
 
 

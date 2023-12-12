@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#button').click(function(e) {
+            var input_value = $("#video_search").val();
+            window.location.replace("/pages/search_video/" + input_value);
+    });
+});
+</script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="search">
+        <form>
+            <input type="text" value="" id="video_search" placeholder="Название видео">
+            <button type="button" id="button">ИСКАТЬ</button>
+        </form>
+    </div>
+    <div class="videos">
+             {% for video in videos %}
+            <div class="video">
+                <div class="thumbnail">
+                    <img src="{{ url_for('static', path='mytube.jpg') }}" alt="">
+                </div>
+                <div class="details">
+                    <div class="title">
+                        <h3>{{ video.title }}</h3>
+                    </div>
+                    <div class="description">
+                        <a href=""> {{ video.description }} </a>
+                    </div>
+                    <div class="views">
+                        <span> 2M Views • 3 Months Ago </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+
+
+
+{% endblock %}
+
