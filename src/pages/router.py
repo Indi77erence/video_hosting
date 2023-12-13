@@ -1,19 +1,12 @@
 from pathlib import Path
-
-import fastapi
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
-from fastapi_amis_admin.admin import settings
-from starlette.responses import RedirectResponse
-
 from src.videos.get_info_video.router import get_video_by_title, get_all_video, get_my_video
 
 router = APIRouter(
 	prefix='/pages',
 	tags=['Pages']
 )
-
-
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory='src/templates')

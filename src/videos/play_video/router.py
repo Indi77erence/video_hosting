@@ -1,12 +1,7 @@
-
-from fastapi import APIRouter, Depends, Form, UploadFile, File, Request
-
-
-from sqlalchemy import select, insert, Row
-
+from fastapi import APIRouter, Depends,Request
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import StreamingResponse
-
 from src.database import get_async_session
 from ..models import video as video_tbl
 from .utils import open_file
@@ -17,10 +12,6 @@ router = APIRouter(
 	prefix='/api',
 	tags=['Play_video']
 )
-
-
-
-
 
 
 @router.get('/{video_title}')

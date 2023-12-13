@@ -1,12 +1,9 @@
 import time
-
 from fastapi import FastAPI, Depends
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache.decorator import cache
-from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
-
 from src.auth.base_config import fastapi_users, auth_backend, current_user
 from src.auth.schemas import UserRead, UserCreate
 from .auth.models import User

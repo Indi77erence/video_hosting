@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, Form, UploadFile, File, Request
-from sqlalchemy import select, insert, Row
+from fastapi import APIRouter, Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.database import get_async_session
 from ..models import video as video_tbl

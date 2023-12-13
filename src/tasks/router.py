@@ -1,7 +1,5 @@
 from fastapi import APIRouter, BackgroundTasks, Depends
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from ..database import get_async_session
 from ..videos.models import video as video_tbl
 from .tasks import send_email_report_last_video

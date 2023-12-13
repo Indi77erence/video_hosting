@@ -1,10 +1,8 @@
 import os
 from uuid import uuid4
-
 import aiofiles
 from fastapi import Depends, UploadFile, HTTPException
 from src.videos.schemas import UploadVideo
-
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,7 +15,6 @@ async def save_video(user_id, video: UploadFile, title: str, description: str):
 	await write_video(path_video, video)
 	info = UploadVideo(title=title, description=description)
 	return path_video, info
-
 
 
 async def write_video(path_video: str, video: UploadFile):
