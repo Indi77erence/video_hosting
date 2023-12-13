@@ -13,3 +13,4 @@ video = Table(
 	Column('file', String),
 	Column('user', Integer, ForeignKey(User.id)),
 )
+

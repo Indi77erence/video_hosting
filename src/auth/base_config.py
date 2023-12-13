@@ -1,7 +1,8 @@
+import fastapi
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 from fastapi_users.authentication import JWTStrategy
-
+from fastapi import Request
 from src.auth.manager import get_user_manager
 from src.auth.models import User
 from src.config import SECRET
@@ -24,4 +25,16 @@ fastapi_users = FastAPIUsers[User, int](
 	[auth_backend],
 )
 
+
+
+
 current_user = fastapi_users.current_user()
+
+
+
+# def get_current_user(request: Request):
+# 	try:
+# 		current_user = fastapi_users.current_user()
+# 		return current_user
+# 	except fastapi.HTTPException:
+# 		return templates.TemplateResponse("error_page.html", {"request": request})

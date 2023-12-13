@@ -7,16 +7,9 @@ from .utils import save_video
 
 
 router = APIRouter(
-	prefix='/upload_video',
+	prefix='/api',
 	tags=['Upload_video']
 )
-
-
-# @router.get('/any_long_operation')
-# @cache(expire=3600)
-# def get_long_op():
-# 	time.sleep(3)
-# 	return 'Много-много данных!'
 
 
 @router.post('')

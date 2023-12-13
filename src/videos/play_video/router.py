@@ -14,16 +14,12 @@ from .utils import open_file
 
 
 router = APIRouter(
-	prefix='/play_video',
+	prefix='/api',
 	tags=['Play_video']
 )
 
 
-# @router.get('/any_long_operation')
-# @cache(expire=3600)
-# def get_long_op():
-# 	time.sleep(3)
-# 	return 'Много-много данных!'
+
 
 
 

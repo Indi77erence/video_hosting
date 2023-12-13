@@ -8,7 +8,7 @@ from .tasks import send_email_report_last_video
 from ..auth.base_config import current_user
 
 router = APIRouter(
-	prefix='/send_email_mess',
+	prefix='/api',
 	tags=['Send_email_mess']
 )
 
@@ -16,7 +16,6 @@ router = APIRouter(
 @router.get("/last_five_video")
 async def get_last_five_video_report(background_tasks: BackgroundTasks, user=Depends(current_user),
 								session=Depends(get_async_session)):
-
 	query = select(video_tbl).order_by(video_tbl.c.title.desc()).limit(5)
 	email_content = await session.execute(query)
 	last_five_video = [i[1] for i in email_content.fetchall()]

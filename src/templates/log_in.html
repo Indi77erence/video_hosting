@@ -1,1 +1,26 @@
 {% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#button').click(function(e) {
+            var input_value_login = $("#login").val();
+            var input_value_password = $("#password").val();
+            window.location.replace("/pages/search_video/" + input_value);
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <div class="search">
+        <form>
+            <input type="text" value="" id="login" placeholder="Login">
+            <p></p>
+            <input type="text" value="" id="password" placeholder="Password">
+            <p></p>
+            <button type="button" id="button">Войти</button>
+        </form>
+    </div>
+{% endblock %}

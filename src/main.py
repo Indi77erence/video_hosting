@@ -1,6 +1,10 @@
+import time
+
 from fastapi import FastAPI, Depends
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
+from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
 
 from src.auth.base_config import fastapi_users, auth_backend, current_user
@@ -38,3 +42,8 @@ async def authenticated_route(user: User = Depends(current_user)):
 	return {"message": f"Hello {user.email}!"}
 
 
+@app.get('/any_long_operation')
+@cache(expire=3600)
+def get_long_op():
+	time.sleep(3)
+	return 'Много-много данных!'
