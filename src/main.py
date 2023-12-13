@@ -42,7 +42,7 @@ async def authenticated_route(user: User = Depends(current_user)):
 	return {"message": f"Hello {user.email}!"}
 
 
-@app.get('/any_long_operation')
+@app.get('/test/any_long_operation')
 @cache(expire=3600)
 def get_long_op():
 	time.sleep(3)
