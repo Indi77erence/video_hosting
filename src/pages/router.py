@@ -19,10 +19,7 @@ def get_start_page(request: Request, videos=Depends(get_all_video)):
 
 @router.get('/my_video')
 def get_my_video_page(request: Request, videos=Depends(get_my_video)):
-	if videos is None:
-		return templates.TemplateResponse("error_page.html", {"request": request})
-	else:
-		return templates.TemplateResponse("my_video.html", {"request": request, "videos": videos["data"]})
+	return templates.TemplateResponse("my_video.html", {"request": request, "videos": videos["data"]})
 
 
 

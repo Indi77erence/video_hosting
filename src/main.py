@@ -12,7 +12,7 @@ from .videos.get_info_video.router import router as get_info_video_router
 from .videos.upload_video.router import router as upload_video_router
 from .videos.play_video.router import router as play_video_router
 from .tasks.router import router as router_message_email
-from .pages.router import router as router_pages
+from .pages.router import router as pages_router
 
 app = FastAPI(title='VideoHosting APP')
 
@@ -25,7 +25,7 @@ app.include_router(router_message_email)
 app.include_router(get_info_video_router)
 app.include_router(upload_video_router)
 app.include_router(play_video_router)
-app.include_router(router_pages)
+app.include_router(pages_router)
 
 
 @app.on_event('startup')
