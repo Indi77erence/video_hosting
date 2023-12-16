@@ -1,6 +1,5 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from src.auth.models import User
-
 metadata = MetaData()
 
 video = Table(

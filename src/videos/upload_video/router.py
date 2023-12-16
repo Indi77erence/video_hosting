@@ -7,7 +7,7 @@ from .utils import save_video
 
 
 router = APIRouter(
-	prefix='/api',
+	prefix='/api/upload_video',
 	tags=['Upload_video']
 )
 

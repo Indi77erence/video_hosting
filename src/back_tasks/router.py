@@ -7,7 +7,7 @@ from ..auth.base_config import current_user
 
 router = APIRouter(
 	prefix='/api',
-	tags=['Send_email_mess']
+	tags=['back_tasks']
 )
 
 

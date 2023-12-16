@@ -8,7 +8,7 @@ from src.config import SMTP_USER, SMTP_PASSWORD
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 465
 
-celery = Celery('tasks', broker='redis://localhost:6379')
+celery = Celery('back_tasks', broker='redis://localhost:6379')
 
 
 def get_email_report_video(user_email: str, last_five_video: List[str]):
