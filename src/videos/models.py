@@ -7,7 +7,7 @@ video = Table(
 	metadata,
 	Column('id', Integer, primary_key=True),
 	Column('title', String),
-	Column('description', String),
+	Column('description', String, default=None),
 	Column('file', String),
 	Column('user', Integer, ForeignKey(User.id)),
 )

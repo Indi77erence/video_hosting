@@ -1,6 +1,6 @@
 from typing import Optional
 from fastapi_users import schemas
-
+from pydantic import BaseModel
 
 class UserCreate(schemas.BaseUserCreate):
 	username: str
@@ -23,3 +23,15 @@ class UserRead(schemas.BaseUser[int]):
 
 	class Config:
 		orm_mode = True
+
+
+class Video(BaseModel):
+	id: int
+	title: str | None
+	description: str | None
+
+
+class GetAllUsers(BaseModel):
+	id: int
+	email: str
+	username: str

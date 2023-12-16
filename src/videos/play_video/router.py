@@ -9,7 +9,7 @@ from .utils import open_file
 
 
 router = APIRouter(
-	prefix='/api/play_video',
+	prefix='/play_video',
 	tags=['Play_video']
 )
 
