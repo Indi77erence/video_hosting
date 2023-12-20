@@ -18,7 +18,6 @@ async def update_video(id_video: int,
 					   values: UpdateVideo = None,
 					   user=Depends(current_user),
 					   session: AsyncSession = Depends(get_async_session)):
-	print(values)
 	query = select(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user == user.id)
 	rez_query = await session.execute(query)
 	if not rez_query.scalars().all():

@@ -20,8 +20,7 @@ services:
       - 6379
 
   app:
-    build:
-      context: .
+    build: .
     env_file:
       - .env-non-dev
     container_name: app_video-hosting
