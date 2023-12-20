@@ -6,8 +6,9 @@ from fastapi_cache.decorator import cache
 from starlette.staticfiles import StaticFiles
 from src.auth.base_config import fastapi_users, auth_backend, current_user
 from src.auth.schemas import UserRead, UserCreate
-from .auth.models import User
 from redis import asyncio as aioredis
+
+from .auth.models import User
 from .videos.get_info_video.router import router as get_info_video_router
 from .videos.upload_video.router import router as upload_video_router
 from .videos.play_video.router import router as play_video_router
@@ -49,3 +50,4 @@ async def authenticated_route(user: User = Depends(current_user)):
 def get_long_op():
 	time.sleep(3)
 	return 'Много-много данных!'
+

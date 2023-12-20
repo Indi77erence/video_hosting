@@ -21,7 +21,7 @@ SEARCH_PATTERN = r'\b\w+\b'
 async def get_all_video(session: AsyncSession = Depends(get_async_session)):
 	query = select(video_tbl)
 	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user)
 				   for data in rez_query]
 	if not rezult_data:
 		return {
@@ -41,7 +41,7 @@ async def get_video_by_id(id_video: int,
 						  session: AsyncSession = Depends(get_async_session)):
 	query = select(video_tbl).where(video_tbl.c.id == id_video)
 	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user) for data
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user) for data
 				   in rez_query]
 	if not rezult_data:
 		return {
@@ -61,13 +61,14 @@ async def get_video_by_title(video_title: str, session: AsyncSession = Depends(g
 	title_for_search = re.findall(SEARCH_PATTERN, video_title)
 	query = select(video_tbl)
 	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user)
 				   for data in rez_query for word in title_for_search
 				   if word in data.title]
+
 	if not rezult_data:
 		return {
 			"status": 200,
-			"message": 'Precondition Failed',
+			"data": rezult_data,
 			"details": f"Видео с названием ({video_title}) не существует!"
 		}
 	return {
@@ -105,7 +106,7 @@ async def get_video_by_description(description: str,
 async def get_my_video(session: AsyncSession = Depends(get_async_session), user: User = Depends(current_user)):
 	query = select(video_tbl).where(video_tbl.c.user == user.id)
 	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user) for data
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user) for data
 				   in rez_query]
 	if not rezult_data:
 		return {

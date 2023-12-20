@@ -34,12 +34,12 @@ def get_login_page(request: Request):
 
 
 @router.get('/registration')
-def get_start_page(request: Request):
+def get_registration_page(request: Request):
 	return templates.TemplateResponse("registration.html", {"request": request})
 
 
 @router.get('/search_video/{video_title}')
-def get_found_video(request: Request, videos=Depends(get_video_by_title)):
+def get_search_video(request: Request, videos=Depends(get_video_by_title)):
 	return templates.TemplateResponse("search_video.html", {"request": request, "videos": videos["data"]})
 
 
