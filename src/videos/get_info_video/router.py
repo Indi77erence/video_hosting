@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,7 +8,6 @@ from ..models import video as video_tbl
 from ...auth.models import User
 from ...pages.schemas import GetSearchVideo, GetSearchVideoUser
 from ...auth.base_config import current_user
-from ...auth.models import User
 import re
 
 router = APIRouter(
@@ -36,77 +37,12 @@ async def get_all_video(session: AsyncSession = Depends(get_async_session)):
 	}
 
 
-@router.get('/get_video_by_id/{id_video}')
-async def get_video_by_id(id_video: int,
-						  session: AsyncSession = Depends(get_async_session)):
-	query = select(video_tbl).where(video_tbl.c.id == id_video)
-	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user) for data
-				   in rez_query]
-	if not rezult_data:
-		return {
-			"status": 200,
-			"message": 'Precondition Failed',
-			"details": f"Видео с id:{id_video} не существует!"
-		}
-	return {
-		"status": 200,
-		"data": rezult_data,
-		"details": f'Видео с id: {id_video}'
-	}
-
-
-@router.get('/get_video_by_title/{video_title}')
-async def get_video_by_title(video_title: str, session: AsyncSession = Depends(get_async_session)):
-	title_for_search = re.findall(SEARCH_PATTERN, video_title)
-	query = select(video_tbl)
-	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user)
-				   for data in rez_query for word in title_for_search
-				   if word in data.title]
-
-	if not rezult_data:
-		return {
-			"status": 200,
-			"data": rezult_data,
-			"details": f"Видео с названием ({video_title}) не существует!"
-		}
-	return {
-		"status": 200,
-		"data": rezult_data,
-		"details": f'Все видео под названием {video_title}'
-	}
-
-
-@router.get('/get_video_by_description/{description}')
-async def get_video_by_description(description: str,
-								   session: AsyncSession = Depends(get_async_session)):
-	desc_for_search = re.findall(SEARCH_PATTERN, description)
-	query = select(video_tbl)
-	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
-				   for data in rez_query for word in desc_for_search
-				   if word in data.description]
-	# if set(search_words) & set(re.findall(SEARCH_PATTERN, data.description))
-
-	if not rezult_data:
-		return {
-			"status": 200,
-			"message": 'Precondition Failed',
-			"details": f"Видео, в описании которых есть: ({description}) не существует!"
-		}
-	return {
-		"status": 200,
-		"data": rezult_data,
-		"details": f'Видео в описании которых есть: {description}'
-	}
-
-
 @router.get('/get_my_video')
 async def get_my_video(session: AsyncSession = Depends(get_async_session), user: User = Depends(current_user)):
 	query = select(video_tbl).where(video_tbl.c.user == user.id)
 	rez_query = await session.execute(query)
-	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user) for data
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user) for
+				   data
 				   in rez_query]
 	if not rezult_data:
 		return {
@@ -138,3 +74,57 @@ async def get_user_video(user_id: int, session: AsyncSession = Depends(get_async
 		"data": rezult_data,
 		"details": f'Все видео пользователя {user_id}'
 	}
+
+
+
+
+@router.get("/all_info")
+async def get_all_info(id_video: Optional[int] = None,
+					  video_title: Optional[str] = None,
+					  description: Optional[str] = None,
+					  session: AsyncSession = Depends(get_async_session)):
+	if id_video and not video_title and not description:
+		query = select(video_tbl).where(video_tbl.c.id == id_video)
+		rez_query = await session.execute(query)
+		rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user)
+					   for data in rez_query]
+		return {
+			"status": 200,
+			"data": rezult_data,
+			"details": f'Видео с id: {id_video}'
+		}
+
+	if video_title and not id_video and not description:
+		title_for_search = re.findall(SEARCH_PATTERN, video_title)
+		query = select(video_tbl)
+		rez_query = await session.execute(query)
+		rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user)
+					   for data in rez_query for word in title_for_search
+					   if word in data.title]
+		print(rezult_data)
+		return {
+			"status": 200,
+			"data": rezult_data,
+			"details": f'Все видео в названии которых есть: {video_title}'
+		}
+
+	if description and not video_title and not id_video:
+		desc_for_search = re.findall(SEARCH_PATTERN, description)
+		query = select(video_tbl)
+		rez_query_desc = await session.execute(query)
+		rezult_data_desc = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
+					   for data in rez_query_desc for word in desc_for_search
+					   if word in data.description]
+		# if set(search_words) & set(re.findall(SEARCH_PATTERN, data.description))
+		return {
+			"status": 200,
+			"data": rezult_data_desc,
+			"details": f'Все видео в описании которых есть: {description}'
+		}
+	else:
+		return {
+			"status": 200,
+			"message": 'Precondition Failed',
+			"details": f"ВЫ не указали входные данные"
+		}
+

@@ -1,14 +1,10 @@
-from typing import Optional, Dict, Any
-
-from fastapi import APIRouter, Depends, Query, HTTPException
-from sqlalchemy import update, select
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.database import get_async_session
 from ..auth.base_config import current_user
 from ..auth.models import User
 from ..auth.schemas import GetAllUsers
-from ..pages.schemas import GetSearchVideo, GetSearchVideoUser
-from ..videos.models import video as video_tbl
 
 router = APIRouter(
 	prefix='/api',

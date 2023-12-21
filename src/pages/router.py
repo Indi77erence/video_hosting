@@ -1,7 +1,9 @@
 from pathlib import Path
+
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
-from src.videos.get_info_video.router import get_video_by_title, get_all_video, get_my_video
+
+from src.videos.get_info_video.router import get_all_video, get_my_video, get_all_info
 
 router = APIRouter(
 	prefix='/pages',
@@ -39,7 +41,7 @@ def get_registration_page(request: Request):
 
 
 @router.get('/search_video/{video_title}')
-def get_search_video(request: Request, videos=Depends(get_video_by_title)):
+def get_search_video(request: Request, videos=Depends(get_all_info)):
 	return templates.TemplateResponse("search_video.html", {"request": request, "videos": videos["data"]})
 
 

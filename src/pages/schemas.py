@@ -4,10 +4,10 @@ from src.auth.schemas import GetAllUsers
 
 
 class GetSearchVideo(BaseModel):
-	id: int
+	id: int | None
 	title: str | None
 	description: str | None
-	user_id: int
+	user_id: int | None
 
 
 class GetSearchVideoUser(BaseModel):
@@ -15,3 +15,5 @@ class GetSearchVideoUser(BaseModel):
 	title: str | None
 	description: str | None
 	user_id: int
+
+
