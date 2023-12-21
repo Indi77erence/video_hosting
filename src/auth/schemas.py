@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi_users import schemas
 from pydantic import BaseModel
 
+
 class UserCreate(schemas.BaseUserCreate):
 	username: str
 	email: str

@@ -7,13 +7,13 @@ class GetSearchVideo(BaseModel):
 	id: int | None
 	title: str | None
 	description: str | None
-	user_id: int | None
+	user: int | None
 
 
 class GetSearchVideoUser(BaseModel):
 	id: int
 	title: str | None
 	description: str | None
-	user_id: int
+	user: int
 
 

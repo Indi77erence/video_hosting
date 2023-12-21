@@ -16,8 +16,8 @@ router = APIRouter(
 async def upload_video(
 		user=Depends(current_user),
 		title: str = Form(...),
-		description: str = None,
 		video: UploadFile = File(...),
+		description: str = None,
 		session: AsyncSession = Depends(get_async_session),
 ):
 	path_video, info = await save_video(user.id, video, title, description)

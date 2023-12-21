@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 
-from src.videos.get_info_video.router import get_all_video, get_my_video, get_all_info
+from src.videos.get_info_video.router import get_my_video, get_all_info
 
 router = APIRouter(
 	prefix='/pages',
@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory='src/templates')
 
 
 @router.get('/home')
-def get_start_page(request: Request, videos=Depends(get_all_video)):
+def get_start_page(request: Request, videos=Depends(get_all_info)):
 	return templates.TemplateResponse("home.html", {"request": request, "videos": videos["data"]})
 
 

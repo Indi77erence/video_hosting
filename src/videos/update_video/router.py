@@ -15,18 +15,18 @@ router = APIRouter(
 
 @router.put('/update_video/{id_video}')
 async def update_video(id_video: int,
-					   values: UpdateVideo = None,
+					   title: str = None,
+					   description: str = None,
 					   user=Depends(current_user),
 					   session: AsyncSession = Depends(get_async_session)):
-	query = select(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user == user.id)
-	rez_query = await session.execute(query)
+	rez_query = await session.execute(select(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user == user.id))
 	if not rez_query.scalars().all():
-		raise HTTPException(status_code=403, detail="Доступ запрещен")
-	stmt = update(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user == user.id).values(
-		**values.model_dump(exclude_none=True))
-	await session.execute(stmt)
+		return HTTPException(status_code=403, detail="Доступ запрещен")
+	stmt = update(video_tbl).where(video_tbl.c.id == id_video).values(title=title, description=description)
+	rez = await session.execute(stmt)
 	await session.commit()
 	return {
 		"status": 200,
-		"details": f'Изменение прошло успешно'
+		"details": f'Изменение прошло успешно!'
 	}
+

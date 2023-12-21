@@ -10,6 +10,7 @@ class UploadVideo(BaseModel):
     description: str | None = None
 
 
+
 class UpdateVideo(BaseModel):
     title: str | None = None
     description: str | None = None

@@ -12,11 +12,11 @@ from .auth.models import User
 from .videos.get_info_video.router import router as get_info_video_router
 from .videos.upload_video.router import router as upload_video_router
 from .videos.play_video.router import router as play_video_router
-from .users.router import router as router_user
+from .users.router import router as user_router
 from .back_tasks.router import router as router_message_email
 from .pages.router import router as pages_router
-from .videos.update_video.router import router as update_router
-from .videos.delete_video.router import router as delete_router
+from .videos.update_video.router import router as update_video_router
+from .videos.delete_video.router import router as delete_video_router
 
 app = FastAPI(title='VideoHosting APP')
 
@@ -24,13 +24,15 @@ app = FastAPI(title='VideoHosting APP')
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
 app.include_router(fastapi_users.get_register_router(UserRead, UserCreate), prefix="/auth", tags=["auth"])
 app.include_router(fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"])
-app.include_router(router_user)
-app.include_router(router_message_email)
-app.include_router(update_router)
+app.include_router(user_router)
 app.include_router(get_info_video_router)
 app.include_router(upload_video_router)
+app.include_router(update_video_router)
+app.include_router(delete_video_router)
 app.include_router(play_video_router)
-app.include_router(delete_router)
+app.include_router(router_message_email)
+
+
 app.include_router(pages_router)
 
 
