@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 
-from src.videos.get_info_video.router import get_my_video, get_all_info
+from src.videos.service import get_my_video, get_all_info
 
 router = APIRouter(
 	prefix='/pages',

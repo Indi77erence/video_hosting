@@ -1,14 +1,23 @@
-from typing import Union, Optional
-
 from pydantic import BaseModel
 
-from src.auth.models import User
+
+class GetSearchVideo(BaseModel):
+    id: int | None
+    title: str | None
+    description: str | None
+    user: int | None
+
+
+class GetSearchVideoUser(BaseModel):
+    id: int
+    title: str | None
+    description: str | None
+    user: int
 
 
 class UploadVideo(BaseModel):
     title: str
     description: str | None = None
-
 
 
 class UpdateVideo(BaseModel):
