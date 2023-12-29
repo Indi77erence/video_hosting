@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="player">
+    <video
+            id="my-player"
+            class="video-js"
+            controls
+            preload="auto"
+            width="1000"
+            height="600"
+            data-setup='{}'> width="1200" controls muted="muted">
+        <source src="http://localhost:8000/api/play_video/{{video_title}}" type="video/mp4" />
+    </video>
+</div>
+
+{% endblock %}
+
+
+
+

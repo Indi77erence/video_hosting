@@ -14,7 +14,7 @@ from starlette.responses import StreamingResponse
 from .models import video as video_tbl
 
 from src.database import get_async_session
-from .schemas import GetSearchVideo, UploadVideo, UpdateVideo
+from .schemas import GetSearchVideo, UploadVideo, UpdateVideo, PlayVideo
 from ..auth.base_config import current_user
 from ..auth.models import User
 
@@ -54,6 +54,18 @@ async def get_all_info(id_video: Optional[int] = None,
 		# if set(search_words) & set(re.findall(SEARCH_PATTERN, data.description))
 		yield rezult_data_desc
 
+	elif video_title and description:
+		title_for_search = re.findall(SEARCH_PATTERN, video_title)
+		desc_for_search = re.findall(SEARCH_PATTERN, description)
+		query = select(video_tbl)
+		rez_query = await session.execute(query)
+		rezult_data_title = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
+							for data in rez_query for word in title_for_search
+							if word in data.title]
+		rezult_all_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user)
+							for data in rezult_data_title for word in desc_for_search
+							if word in data.description]
+		yield rezult_all_data
 
 	elif user_id:
 		query = select(video_tbl).where(video_tbl.c.user == user_id)
@@ -73,6 +85,19 @@ async def get_my_video(session: AsyncSession = Depends(get_async_session), user:
 	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user) for
 				   data
 				   in rez_query]
+	if not rezult_data:
+		raise HTTPException(status_code=200, detail="У вас нет загруженных видео")
+	yield rezult_data
+
+
+async def get_all_video(session: AsyncSession = Depends(get_async_session)):
+	query = select(video_tbl)
+	rez_query = await session.execute(query)
+	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user=data.user) for
+				   data
+				   in rez_query]
+	if not rezult_data:
+		raise HTTPException(status_code=200, detail="На хостинге нет загруженных видео")
 	yield rezult_data
 
 
@@ -90,14 +115,14 @@ async def upload_video(user=Depends(current_user),
 
 
 async def update_video(id_video: int,
-					   values: UpdateVideo,
+					   values: UpdateVideo = None,
 					   user=Depends(current_user),
 					   session: AsyncSession = Depends(get_async_session)):
 	rez_query = await session.execute(select(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user == user.id))
 	if not rez_query.scalars().all():
 		yield HTTPException(status_code=403, detail="Доступ запрещен")
 	stmt = update(video_tbl).where(video_tbl.c.id == id_video).values(values.dict())
-	rez = await session.execute(stmt)
+	await session.execute(stmt)
 	await session.commit()
 	yield values
 
@@ -198,3 +223,12 @@ async def open_file(request, file):
 		headers['Content-Range'] = f'bytes {range_start}-{range_end}/{file_size}'
 
 	return file, satus_code, content_len, headers
+
+
+async def get_video_title(video_title: str, session: AsyncSession = Depends(get_async_session)):
+	query = select(video_tbl).where(video_tbl.c.title == video_title)
+	rez_query = await session.execute(query)
+	rezult_data = [PlayVideo(title=data.title) for data in rez_query]
+	if not rezult_data:
+		raise HTTPException(status_code=200, detail="Видео с таким названием отсутствует")
+	yield rezult_data[0].title

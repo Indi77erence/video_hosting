@@ -10,10 +10,15 @@ class GetDataUsers(BaseModel):
 
 
 class UpdateUser(BaseModel):
-	email: str | None = None
-	username: str | None = None
+	email: str = None
+	username: str = None
 
 
 class DeleteUser(BaseModel):
 	email: str
 	username: str
+
+
+class UserLogIn(BaseModel):
+	username: str
+	password: str

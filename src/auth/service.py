@@ -5,6 +5,5 @@ from src.auth.models import User
 from src.database import get_async_session
 
 
-# noinspection PyTypeChecker
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
 	yield SQLAlchemyUserDatabase(session, User)

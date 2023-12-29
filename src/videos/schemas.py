@@ -25,4 +25,7 @@ class UpdateVideo(BaseModel):
     description: str | None = None
 
 
+class PlayVideo(BaseModel):
+    title: str
+
 

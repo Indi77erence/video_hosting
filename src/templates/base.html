@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     {% block head %}{% endblock %}
     <title>MyTube</title>
 </head>
+
 <body>
 <h1>MyTube</h1>
 <ul>
@@ -12,13 +14,19 @@
     <li><a data-text="My video" href="/pages/my_video">My video</a></li>
     <li><a data-text="Search video" href="/pages/search_video">Search video</a></li>
     <li><a data-text="Log in" href="/pages/log_in">Log in</a></li>
-
 </ul>
-    <div id="content">
+    <div class="content">
         {% block content %}{% endblock %}
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
@@ -52,13 +60,18 @@ ul li a:before{ content:attr(data-text); display:block; color:#CDF745; }
 
 <!--Поле поиска-->
 
+.container {
+	margin: 50px auto;
+	max-width: 500px;
+}
 
-  * {box-sizing: border-box;}
+* {box-sizing: border-box;}
 form {
   width: auto;
   float: center;
   margin-right: 30px;
 }
+
 input {
   width: 200px;
   height: 42px;
@@ -70,6 +83,7 @@ input {
   position: relative;
   transition: .3s linear;
 }
+
 input:focus {
   width: 300px;
   background: #CDF745;
@@ -82,18 +96,32 @@ button {
   margin-right: 30px;
   background: #FFF;
 }
+
 button:hover {
       background-color:#CDF745;
       transition: 0.1s;
   }
+
 img {
     width: 300px;
 }
-.video {
-    padding-left: 30px;
+
+.video-js{
+    background-color: black;
 }
-videos {
-    padding-top: 20px;
+
+.videos {
+    padding-top: 50px;
+    position: relative;
+    float: center;
+}
+
+.search {
+    padding-top: 50px;
+}
+
+.player {
+    padding-top: 50px;
 }
 </style>
 

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="search">
+    <form action="/auth/login" method="post">
+        <input type="text" name="username" id="username" placeholder="Логин">
+        <input type="text" name="password" id="password" placeholder="Пароль">
+        <button>Войти</button>
+    </form>
+</div>
+{% endblock %}
