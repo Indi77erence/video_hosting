@@ -8,7 +8,7 @@ from .service import get_all_info, get_my_video, upload_video, update_video, del
 
 router = APIRouter(
 	prefix='/api',
-	tags=['Videos']
+	tags=['Video']
 )
 
 templates = Jinja2Templates(directory='src/templates')
@@ -29,8 +29,7 @@ async def upload_video(answer=Depends(upload_video)):
 	return answer
 
 
-
-@router.put("/update_my_video/{id_video}", response_model=UpdateVideo)
+@router.patch("/update_my_video/{id_video}", response_model=UpdateVideo)
 async def update_my_video(answer=Depends(update_video)):
 	return answer
 
@@ -43,3 +42,5 @@ async def delete_my_video(answer=Depends(delete_video)):
 @router.get("/play_video/{video_title}")
 async def play_video(answer=Depends(play_video)):
 	return answer
+
+

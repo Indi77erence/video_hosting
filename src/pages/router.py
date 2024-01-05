@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 
@@ -21,6 +20,7 @@ def get_start_page(request: Request, videos=Depends(get_all_video)):
 
 @router.get('/my_video')
 def get_my_video_page(request: Request, videos=Depends(get_my_video)):
+	print(videos)
 	return templates.TemplateResponse("my_video.html", {"request": request, "videos": videos})
 
 
@@ -50,7 +50,9 @@ async def get_error_page(request: Request):
 
 
 @router.get('/play_video/{video_title}')
-async def get_error_page(request: Request, video_title=Depends(get_video_title)):
-	return templates.TemplateResponse("play.html", {"request": request, "video_title": video_title})
+async def play_video(request: Request, video_title=Depends(get_video_title)):
+	return templates.TemplateResponse("play.html", {"request": request,
+													"video_title": video_title[0].title,
+													"preview": video_title[0].preview})
 
 

@@ -5,14 +5,11 @@
              {% for video in videos %}
             <div class="video">
                 <div class="thumbnail">
-                    <img src="{{ url_for('static', path='mytube.jpg') }}" alt="">
+                    <a href="/pages/play_video/{{video.title}}"><img src="{{ url_for('static', path=video.preview) }}"></a>
                 </div>
                 <div class="details">
                     <div class="title">
                         <a href="/pages/play_video/{{video.title}}"><h3>{{ video.title }}</h3></a>
-                    </div>
-                    <div class="description">
-                        <a href="/pages/play_video/{{video.title}}"> {{ video.description }} </a>
                     </div>
                 </div>
             </div>

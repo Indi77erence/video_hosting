@@ -57,13 +57,27 @@ ul li a:before{ content:attr(data-text); display:block; color:#CDF745; }
  color:#CDF745; }
 
 
-
-<!--Поле поиска-->
-
-.container {
-	margin: 50px auto;
-	max-width: 500px;
+.videos{
+    position: center;
+    max-width:2px;
+    max-height: auto;
+    border: 2px solid #aaaaaa;
 }
+.video{
+    position: relative;
+    margin: 50px 300px 50px 50px;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+}
+.detail {
+    max-height: auto;
+    margin: 50px 300px 50px 50px;
+}
+
+
+
+
 
 * {box-sizing: border-box;}
 form {
@@ -80,7 +94,7 @@ input {
   border: 2px solid #324b4e;
   background: #FFF;
   outline: none;
-  position: relative;
+
   transition: .3s linear;
 }
 
@@ -103,17 +117,10 @@ button:hover {
   }
 
 img {
-    width: 300px;
-}
-
-.video-js{
-    background-color: black;
-}
-
-.videos {
-    padding-top: 50px;
-    position: relative;
-    float: center;
+    width: 400px;
+    height: 250px;
+    margin-bottom: 25px;
+    float: left;
 }
 
 .search {
@@ -123,6 +130,8 @@ img {
 .player {
     padding-top: 50px;
 }
+
+
 </style>
 
 

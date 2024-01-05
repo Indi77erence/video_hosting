@@ -8,7 +8,7 @@ from ..auth.schemas import MyUserCreate, UserRead
 
 router = APIRouter(
 	prefix='/api',
-	tags=['Users']
+	tags=['User']
 )
 
 @router.get("/authenticated-route")

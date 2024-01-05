@@ -1,15 +1,54 @@
 {% extends "base.html" %}
 
 {% block head %}
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <div class="search">
-    <form action="/auth/login" method="post">
+    <form name="login" action="/auth/login" method="post">
         <input type="text" name="username" id="username" placeholder="Логин">
-        <input type="text" name="password" id="password" placeholder="Пароль">
-        <button>Войти</button>
+        <input type="password" name="password" id="password" placeholder="Пароль">
+        <button>ВОЙТИ</button>
     </form>
+    <form id="myForm" name="register">
+        <input type="email" name="email" id="reg_email" placeholder="Email">
+        <input type="password" name="password" id="reg_password" placeholder="Password">
+        <input type="text" name="username" id="reg_username" placeholder="Username">
+        <button style="width: 200px;">Зарегистрироваться</button>
+    </form>
+<script>
+  const form = document.getElementById('myForm');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {};
+
+    for (let [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+
+    const jsonData = JSON.stringify(data);
+
+    fetch('/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: jsonData
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('Данные успешно отправлены');
+      } else {
+        console.error('Произошла ошибка при отправке данных');
+      }
+    })
+    .catch(error => {
+      console.error('Произошла ошибка при отправке данных:', error);
+    });
+  });
+</script>
 </div>
 {% endblock %}

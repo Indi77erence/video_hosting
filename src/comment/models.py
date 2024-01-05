@@ -1,15 +1,16 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from src.auth.models import user
+from src.videos.models import video
 
 metadata = MetaData()
 
-video = Table(
-	'video',
+
+
+comment = Table(
+	'comment',
 	metadata,
 	Column('id', Integer, primary_key=True),
-	Column('title', String(100), nullable=False),
-	Column('description', String(200), default=None),
-	Column('preview', String),
-	Column('file', String),
+	Column('content', String(500), default=None),
 	Column('user_id', Integer, ForeignKey(user.c.id, ondelete='CASCADE')),
+	Column('video_id', Integer, ForeignKey(video.c.id, ondelete='CASCADE')),
 )

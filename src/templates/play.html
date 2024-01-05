@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% block head %}
-{% endblock %}
+{% block head %}{% endblock %}
 
 {% block content %}
 <div class="player">
@@ -16,7 +15,12 @@
         <source src="http://localhost:8000/api/play_video/{{video_title}}" type="video/mp4" />
     </video>
 </div>
-
+    <div class="comment">
+        <form>
+            <input id="input" name="input" value="" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 {% endblock %}
 
 
