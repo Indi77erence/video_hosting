@@ -8,6 +8,11 @@ class GetComment(BaseModel):
 	video_id: int
 
 
+class GetCommentsForVideo(BaseModel):
+	username: str
+	content: str
+
+
 class AddComment(BaseModel):
 	id_video: int
 	content: str

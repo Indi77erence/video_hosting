@@ -6,7 +6,7 @@ from src.auth.base_config import current_user
 from src.auth.models import User
 from src.auth.schemas import UserRead
 from src.database import get_async_session
-from src.users.schemas import GetDataUsers, UpdateUser
+from src.users.schemas import UpdateUser
 
 
 async def get_all_users(session: AsyncSession = Depends(get_async_session)):

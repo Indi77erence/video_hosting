@@ -20,16 +20,6 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 <style>
 body {
   font-family: 'Roboto', sans-serif;
@@ -57,13 +47,13 @@ ul li a:before{ content:attr(data-text); display:block; color:#CDF745; }
  color:#CDF745; }
 
 
-.videos{
+.videos {
     position: center;
     max-width:2px;
     max-height: auto;
-    border: 2px solid #aaaaaa;
+    border: 50px solid #aaaaaa;
 }
-.video{
+.video {
     position: relative;
     margin: 50px 300px 50px 50px;
     display: inline-block;
@@ -123,15 +113,47 @@ img {
     float: left;
 }
 
-.search {
+.content {
     padding-top: 50px;
 }
 
-.player {
-    padding-top: 50px;
+.all_comment {
+    background-color: white;
+    margin: 50px 300px 50px 300px;
+    border-radius: 42px;
+}
+.comment {
+    text-align: left;
+    padding-left: 50px;
+    }
+
+.desc h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 268%;
 }
 
+.add_video div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
+.add_video label {
+  flex-basis: 150px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.add_video input[type="text"],
+.add_video input[type="file"] {
+  flex-grow: 1;
+}
+
+.add_video button {
+  margin-top: 10px;
+}
 </style>
 
 

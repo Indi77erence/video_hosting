@@ -10,12 +10,10 @@ from fastapi import Depends, Request
 from sqlalchemy import select, update, delete, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import StreamingResponse
-
 from .models import video as video_tbl
 from src.database import get_async_session
 from .schemas import GetSearchVideo, UploadVideo, UpdateVideo, PlayVideo
 from ..auth.base_config import current_user
-from ..auth.models import User
 
 SEARCH_PATTERN = r'\b\w+\b'
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -31,7 +29,7 @@ async def get_all_info(id_video: Optional[int] = None,
 		rez_query = await session.execute(query)
 		rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
 									  preview=data.preview) for data in rez_query]
-		yield rezult_data
+		return rezult_data
 
 
 	elif video_title and not id_video and not description:
@@ -40,9 +38,9 @@ async def get_all_info(id_video: Optional[int] = None,
 		rez_query = await session.execute(query)
 		rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
 									  preview=data.preview) for data in rez_query for word in title_for_search
-					   				  if word in data.title]
+					   if word in data.title]
 
-		yield rezult_data
+		return rezult_data
 
 	elif description and not video_title and not id_video:
 		desc_for_search = re.findall(SEARCH_PATTERN, description)
@@ -50,11 +48,11 @@ async def get_all_info(id_video: Optional[int] = None,
 		rez_query_desc = await session.execute(query)
 		rezult_data_desc = [
 			GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
-									  preview=data.preview)
+						   preview=data.preview)
 			for data in rez_query_desc for word in desc_for_search
 			if word in data.description]
 		# if set(search_words) & set(re.findall(SEARCH_PATTERN, data.description))
-		yield rezult_data_desc
+		return rezult_data_desc
 
 	elif video_title and description:
 		title_for_search = re.findall(SEARCH_PATTERN, video_title)
@@ -63,14 +61,15 @@ async def get_all_info(id_video: Optional[int] = None,
 		rez_query = await session.execute(query)
 		rezult_data_title = [
 			GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
-									  preview=data.preview)
+						   preview=data.preview)
 			for data in rez_query for word in title_for_search
 			if word in data.title]
-		rezult_all_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
-									  preview=data.preview)
-						   for data in rezult_data_title for word in desc_for_search
-						   if word in data.description]
-		yield rezult_all_data
+		rezult_all_data = [
+			GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
+						   preview=data.preview)
+			for data in rezult_data_title for word in desc_for_search
+			if word in data.description]
+		return rezult_all_data
 
 	elif user_id:
 		query = select(video_tbl).where(video_tbl.c.user_id == user_id)
@@ -78,21 +77,19 @@ async def get_all_info(id_video: Optional[int] = None,
 		rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
 									  preview=data.preview)
 					   for data in rez_query]
-		yield rezult_data
+		return rezult_data
 
 	else:
 		rezult_data = [{"info": "На хостинге нет загруженных видео"}]
-		yield rezult_data
+		return rezult_data
 
 
-async def get_my_video(session: AsyncSession = Depends(get_async_session), user: User = Depends(current_user)):
+async def get_my_video(session: AsyncSession = Depends(get_async_session), user=Depends(current_user)):
 	query = select(video_tbl).where(video_tbl.c.user_id == user.id)
 	rez_query = await session.execute(query)
 	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
 								  preview=data.preview) for data in rez_query]
-	if not rezult_data:
-		raise HTTPException(status_code=200, detail="У вас нет загруженных видео")
-	yield rezult_data
+	return rezult_data
 
 
 async def get_all_video(session: AsyncSession = Depends(get_async_session)):
@@ -100,9 +97,9 @@ async def get_all_video(session: AsyncSession = Depends(get_async_session)):
 	rez_query = await session.execute(query)
 	rezult_data = [GetSearchVideo(id=data.id, title=data.title, description=data.description, user_id=data.user_id,
 								  preview=data.preview) for data in rez_query]
-	if not rezult_data:
-		raise HTTPException(status_code=200, detail="На хостинге нет загруженных видео")
-	yield rezult_data
+	# if not rezult_data:
+	# 	raise HTTPException(status_code=200, detail="На хостинге нет загруженных видео")
+	return rezult_data
 
 
 async def update_video(id_video: int,
@@ -112,11 +109,11 @@ async def update_video(id_video: int,
 	rez_query = await session.execute(
 		select(video_tbl).where(video_tbl.c.id == id_video, video_tbl.c.user_id == user.id))
 	if not rez_query.scalars().all():
-		yield HTTPException(status_code=403, detail="Доступ запрещен")
+		return HTTPException(status_code=403, detail="Доступ запрещен")
 	stmt = update(video_tbl).where(video_tbl.c.id == id_video).values(values.dict())
 	await session.execute(stmt)
 	await session.commit()
-	yield values
+	return values
 
 
 async def delete_video(id_video: int,
@@ -172,9 +169,9 @@ async def write_preview(path_preview: str, preview: UploadFile):
 		return await buffer.write(data_preview)
 
 
-async def play_video(video_title: str, request: Request,
+async def play_video(id_video: int, request: Request,
 					 session: AsyncSession = Depends(get_async_session)) -> StreamingResponse:
-	stmt = select(video_tbl).where(video_tbl.c.title == video_title)
+	stmt = select(video_tbl).where(video_tbl.c.id == id_video)
 	result = await session.execute(stmt)
 	file = result.fetchone()[4]
 	file, status_code, content_len, headers = await open_file(request, file)
@@ -245,4 +242,4 @@ async def get_video_title(video_title: str, session: AsyncSession = Depends(get_
 	rezult_data = [PlayVideo(title=data.title, preview=data.preview) for data in rez_query]
 	if not rezult_data:
 		raise HTTPException(status_code=200, detail="Видео с таким названием отсутствует")
-	yield rezult_data
+	return rezult_data

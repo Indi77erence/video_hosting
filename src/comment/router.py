@@ -1,18 +1,19 @@
 from typing import List
-
+from starlette.templating import Jinja2Templates
 from fastapi import APIRouter, Depends
+from src.comment.schemas import UpdateComment, GetComment, GetCommentsForVideo
+from src.comment.service import update_my_comment, add_comment, get_user_comment, get_comments, delete_my_comment
 
-from src.comment.schemas import AddComment, UpdateComment, GetComment
-from src.comment.service import update_my_comment, add_comment, get_user_comment, get_comment, delete_my_comment
 
 router = APIRouter(
 	prefix='/api',
 	tags=['Comment']
 )
+templates = Jinja2Templates(directory='src/templates')
 
 
-@router.get("/get_video_comment/{id_video}", response_model=List[GetComment])
-async def get_comment(answer=Depends(get_comment)):
+@router.get("/get_video_comment/{id_video}", response_model=List[GetCommentsForVideo])
+async def get_comment(answer=Depends(get_comments)):
 	return answer
 
 
@@ -21,8 +22,13 @@ async def get_user_comment(answer=Depends(get_user_comment)):
 	return answer
 
 
-@router.post("/add_comment", response_model=AddComment)
-async def add_comment(answer=Depends(add_comment)):
+@router.get("/get_user_comment/{content}", response_model=List[GetComment])
+async def get_user_comment(answer=Depends(get_user_comment)):
+	return answer
+
+
+@router.post("/add_comment")
+async def add_comments(answer=Depends(add_comment)):
 	return answer
 
 

@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form id="add_video" style="padding-top: 20px;" enctype="multipart/form-data" action="/api/upload_video/" method="POST">
+    <input id="title" type="text" name="title" placeholder="Название">
+    <input id="description" type="text" name="description" placeholder="Описание">
+    <input id="preview" type="file" accept=".jpg, .png" name="preview" placeholder="Превью к видео">
+    <input id="video" type="file" accept=".mp4" name="video" placeholder="Файл с видео">
+    <button id="button" style="width: 156px;">Загрузить</button>
+</form>
     <div class="videos">
              {% for video in videos %}
             <div class="video">
-                <div class="thumbnail">
-                    <a href="/pages/play_video/{{video.title}}"><img src="{{ url_for('static', path=video.preview) }}"></a>
+                <div class="logo">
+                    <a href="/pages/play_video/{{video.id}}"><img src="{{ url_for('static', path=video.preview) }}"></a>
                 </div>
-                <div class="details">
-                    <div class="title">
-                        <a href="/pages/play_video/{{video.title}}"><h3>{{ video.title }}</h3></a>
-                    </div>
+                <div class="desc">
+                    <a href="/pages/play_video/{{video.id}}"><h3>{{ video.title }}</h3></a>
                 </div>
             </div>
             {% endfor %}
     </div>
+
 {% endblock %}

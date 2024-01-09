@@ -11,6 +11,7 @@ router = APIRouter(
 	tags=['User']
 )
 
+
 @router.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_user)):
 	return {"message": f"Hello {user.email}!"}
@@ -35,11 +36,7 @@ async def update_my_user(answer=Depends(update_my_user)):
 async def delete_my_users(answer=Depends(delete_my_user)):
 	return answer
 
-
 # @router.post('/create_user')
 # async def create_user(user_create: MyUserCreate, user_manager=Depends(get_user_manager)):
 # 	user = await user_manager.create(user_create)
 # 	return f"User created: {user.username}"
-
-
-

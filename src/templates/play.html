@@ -3,6 +3,7 @@
 {% block head %}{% endblock %}
 
 {% block content %}
+<h3 style="color: white;">{{videos[0].title}}</h3>
 <div class="player">
     <video
             id="my-player"
@@ -11,16 +12,27 @@
             preload="auto"
             width="1000"
             height="600"
-            data-setup='{}'> width="1200" controls muted="muted">
-        <source src="http://localhost:8000/api/play_video/{{video_title}}" type="video/mp4" />
+            data-setup='{}'>
+        <source src="/api/play_video/{{videos[0].id}}" type="video/mp4" />
     </video>
 </div>
-    <div class="comment">
-        <form>
-            <input id="input" name="input" value="" />
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+<form id="commentForm" style="padding-top: 20px;" action="/api/add_comment" method="POST">
+    <input id="id_video" type="hidden" name="id_video" value="{{videos[0].id}}">
+    <input id="content" type="text" name="content" style="width: 500px;" placeholder="Ваш комментарий">
+    <button id="button" style="width: 156px;">Комментировать</button>
+</form>
+<div class="all_comment">
+    <p>----------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+    {% for comment in comments %}
+        <div class="comment">
+
+            <h3 style="color: black;">User: {{ comment.username }}</h3>
+            <h4 style="color: black; text-align: center;"> Comment: {{ comment.content }}</h4>
+            <p>----------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
 
 

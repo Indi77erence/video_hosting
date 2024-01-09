@@ -39,7 +39,7 @@ async def delete_my_video(answer=Depends(delete_video)):
 	return answer
 
 
-@router.get("/play_video/{video_title}")
+@router.get("/play_video/{id_video}")
 async def play_video(answer=Depends(play_video)):
 	return answer
 
