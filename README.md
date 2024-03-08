@@ -1,5 +1,5 @@
 <p align="center">
-      <img src="https://ds-blobs-1.cdn.devapps.ru/5929463.png" border="0" width="726">
+      <img src="https://ds-blobs-1.cdn.devapps.ru/5929463.png" border="0" width="400">
 </p>
 
 ## Видеохостинг
