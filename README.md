@@ -1,5 +1,5 @@
 <p align="center">
-      <img src="https://play-lh.googleusercontent.com/nS1FZryN3ZzBq-z_w6AG9HZLQwZERhcSU9rVRNa3K-4zmD3LQLZA3is1tiePncrGEQ" border="0" width="726">
+      <img src="https://ds-blobs-1.cdn.devapps.ru/5929463.png" border="0" width="726">
 </p>
 
 ## Видеохостинг
